@@ -106,3 +106,54 @@ def rebalanceR(AVLTree, node):
         else:
             rotateRight(AVLTree, node)
 
+#insert binarytree modificaso para AVLT
+
+def insertw(B,newnode, currentnode):
+    if newnode.key>currentnode.key:
+        if currentnode.rightnode==None:
+            newnode.parent=currentnode
+            currentnode.rightnode=newnode
+            #cuando ya insertamos tenemos que chequear que el arbol siga siendo AVL
+            #tendremos que cheaquer en esa rama el bf de cada uno de sus padre si uno 
+            #no se encuentra en el intervalo entonces balanceamos
+            if check_balance_parent(newnode) != None:
+                #balancear
+                reBalance(B)
+            return newnode.key
+        else:
+            return insertw(newnode, currentnode.rightnode)
+        
+    elif newnode.key<currentnode.key:
+        if currentnode.leftnode==None:
+            newnode.parent=currentnode
+            currentnode.leftnode=newnode
+            #chequeamos solo subieron en el arbol
+            if check_balance_parent(newnode) != None:
+                #balancear
+                reBalance(B)
+
+            return newnode.key
+        else:
+            return insertw(newnode, currentnode.leftnode)
+    else:
+        return None
+
+
+def check_balance_parent(node):
+    while node != None:
+        calculate_balance_node(node)
+        if node.bf >1 or node.bf <-1:
+            return node
+        node=node.parent
+    return None
+
+#mismo inser de binarytree pero ahora pasamos el arbol como parametro
+def insert(B,element,key):
+    newnode=AVLNode()
+    newnode.value=element
+    newnode.key=key
+    currentnode=B.root
+    if B.root==None:
+        B.root=newnode
+    else:
+        return insertw(B,newnode, currentnode)
