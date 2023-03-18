@@ -106,8 +106,7 @@ def rebalanceR(AVLTree, node):
         else:
             rotateRight(AVLTree, node)
 
-#insert binarytree modificaso para AVLT
-
+#insert binarytree modificado para AVLT
 def insertw(B,newnode, currentnode):
     if newnode.key>currentnode.key:
         if currentnode.rightnode==None:
