@@ -1,3 +1,4 @@
+from itertools import cycle
 class Trie:
 	root = None
 
@@ -84,7 +85,7 @@ def search_ultimonodo(T, palabra):
             new_node = search_children(current.children, palabra[i])
 
 
-   """ for letra in palabra:
+""" for letra in palabra:
         new_node=search_children(current.children,letra)
         if new_node == None:
             return 
@@ -111,9 +112,21 @@ def delete(T,palabra):
                nodo_final=nodo_final.parent
         nodo_final.parent.remove(nodo_final)
         return True
+
+
+"""
+def palabras(nodo,palabra_actual,n):
+
+    if nodo.isEndOfWord== True and (len(palabra_actual)==n):
+        print_list(palabra_actual)
+    elif (len(palabra_actual)<n):
+        for letra in nodo.children:
+            palabra_generada=palabra_actual+letra
+            palabras(letra,palabra_generada,n)
     
+"""
 
-
+"""
 def escribir_palabras(T,patron,n):
     lista_palabras=[]
     lista_nodos_finales=[]
@@ -125,26 +138,66 @@ def lastnode(node,list):
        if (node.children ==None or node.children < 1) and node.isendOfWOrrd==True: 
         list.append(node)
         for i in range (len(node.children)):
-            lastnode(node.children[i],list)
+            lastnode(node.children[i],list)"""
+#punto4    
+def prefijo(T,p):
+    pre=[]
+    children=cycle(T.root.children)
+    current=next(children)
+    for i in range (len(p)):
+        while current.key != p[i]:
+            children=cycle(current.children)
+            current=next(children)
+        if current.key == p[i]:
+            pre.append(current)
+                
+    if len(pre) !=0:
+        return pre[len(pre)-1]#devuelve el ultimo nodo
+    else:
+        return None
 
+def patron(T,p,n):
+    palabras=[]
+    nodo=prefijo(T,p)
+    traverse_level(nodo,p,palabras,n)
+    return palabras
 
+def traverse_level(nodo,prefijo,palabras,n):
+    if nodo.isEndOfWord==True and len(prefijo)==n:
+        palabras.append(prefijo)
+    for i in range (len(nodo.children)):
+        traverse_level(nodo.children[i],prefijo+ nodo.children[i].key,palabras,n)
 
+#Recorre Argo y nos guarda la palabras PUNTO 5
+def traverse(nodo,prefijo,palabras):
+    if nodo.isEndOfWord==True:
+        palabras.append(prefijo)
+    for i in range (len(nodo.children)):
+        traverse(nodo.children[i],prefijo+ nodo.children[i].key,palabras)
                
+def get_words(T):
+    words = []
+    traverse(T.root, '', words)
+    return words
 
+def is_sublist(lst1, lst2):
+    return set(lst1).issubset(set(lst2))
 
+#punto 6
+"""Implemente un algoritmo que dado el Trie T devuelva True si existen en el documento 
+T dos cadenas invertidas. Dos cadenas son invertidas si se leen de izquierda a derecha y 
+contiene los mismos caracteres que si se lee de derecha a izquierda, ej: abcd y dcba son
+ cadenas invertidas, gfdsa y asdfg son cadenas invertidas, sin embargo abcd y dcka no son
+   invertidas ya que difieren en un carácter."""
+def palabras_invertidas(T):
+    words= get_words(T)
+    return has_inverted_list(words)
 
-       """ buscamos el nodo en el que empieza la palabra
-        nodeincio = search_children(T.root.childre,palabra[0])
-        if (verificar_ramas(nodeincio) ==True): 
-            #casso2
-            if (letras_marcadas()==1):
+""" [::-1] se utiliza para obtener la list invertida"""
+def has_inverted_list(lst):
+    for sublst in lst:
+        if sublst[::-1] in lst:
+            return True
+    return False
 
-            #casso3    
-            else:
-        #caso4:
-        else:
-
-        
-        los desvinculamos: del arreglro T.root.children borramos el nodo del primer caracter de la palabra"""
-    
-
+#punto 7
