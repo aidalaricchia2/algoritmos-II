@@ -28,4 +28,4 @@ print(is_sublist(palabras1, palabras2))"""
 
 #palabras=patron(T,"HO",4)
 #print(palabras)
-print(palabras_invertidas(T))
+#print(palabras_invertidas(T))
